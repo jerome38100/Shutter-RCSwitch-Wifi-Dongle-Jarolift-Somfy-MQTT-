@@ -1,7 +1,9 @@
-# Jarolift and SOMFY_MQTT
+# Jarolift, SOMFY and RCSwitch_MQTT
 
 Controlling Jarolift(TM) TDEF 433MHz radio shutters and SOMFY radio shutters via ESP8266 and CC1101 Transceiver Module in asynchronous mode.
+Receive and Send RF 433 signal ( RCSwitch library)
 Experimental version.
+
 Use at your own risk. For private/educational use only. (Keeloq algorithm licensed only to TI Microcontrollers)
 This project is not affiliated in any way with the vendor of the Jarolift components.
 Jarolift is a Trademark of Schöneberger Rolladenfabrik GmbH & Co. KG
@@ -11,9 +13,7 @@ FHEM home automation server. You find the original FHEM version on the project's
 
 
 ### Original Author
-
 Written by Steffen Hille in Nov, 2017
-
 
 ### Project Homepage and Forum
 
@@ -25,25 +25,24 @@ If you need support please use the forum [Project Forum](http://www.bastelbudenb
 The main code of Jarolift_MQTT is licensed under the GPLv3. 
 The provided libraries have different licenses, look into the respective files for more information.
 * ELECHOUSE CC1101 library	MIT license
-* CC1101 library        	LGPL-License
 * DoubleResetDetector  	MIT License
 * Keeloq library      	unknown License
 * PubSubClient        	MIT License
 * simpleDSTadjust     	unknown License
+* RCSwitch             unknown License
 
 ### Necessary Hardware:
 
 * a NodeMCU board or similar, based on ESP8266 microcontroller
-* a CC1101 Transmitter board
+* a CC1101 Transmitter board (868 Mhz to switch between 433.42 and 44.92 Mhz)
 * some connection cables
 
 Photos and hints on project home website
-
  
 ### Prepare Arduino IDE and libraries
 
 Download an install the Arduino IDE from [Arduino website](//www.arduino.cc/en/Main/Software)
-(as time of writing the current version is 1.8.5)
+(as time of writing the current version is 1.8.5 seems have issue view latest release)
 
 Locate your arduino sketch directory - this is `$HOME/Arduino/` in linux
 
@@ -72,6 +71,7 @@ TODO write a more detailed description
 In menu "Tools" set the correct board type. If you have any kind of NodeMCU, the board
 ``NodeMCU 1.0 (ESP-12E Module`` will probably work.
 
+
 You may look at the wiki for [pictures of the modules](https://github.com/madmartin/Jarolift_MQTT/wiki/Devices) or at this [comparison of boards](https://frightanic.com/iot/comparison-of-esp8266-nodemcu-development-boards/).
 
 There are two possible pitfalls when choosing the wrong board type or changing between board types:
@@ -83,7 +83,7 @@ Note on the LED on the board:
 The following settings have proofed to work:
 
 ##### ESP Core 2.4.1 / NodeMCU v1.0/V2
-* Board: "NodeMCU 1.0 (ESP-12E Module)"
+* Board: "NodeMCU 1.0 (ESP-12E Module)" or "Generic ESP8266 Module"
 * Flash Size: "4M (1M SPIFFS)"
 * lwIP variant: "v2 Lower Memory"
 * CPU Frequency: "80 MHz"
@@ -96,11 +96,7 @@ The following settings have proofed to work:
 * CPU Frequency: "80 MHz"
 * Upload speed: "115200"
 
-
 Dont forget to set the correct serial port (Tools->Port) after plugging the USB connector of the NodeMCU into the computer.
-
-Upload the compiled sketch into the NodeMCU. Second, you need to upload the files from the data directory into the SPIFFS area. This is only necessary on first use of the NodeMCU and then only after the content of the files has changed.
-
 
 ### Uploading files to SPIFFS (ESP8266 internal filesystem)
 
@@ -120,7 +116,11 @@ directory into ESP8266 flash file system.
    uploading the files into ESP8266 flash file system. When done, IDE
    status bar will display `SPIFFS Image Uploaded` message.
 
-
+Upload the data files (html files)
+ Tools / ESP8266 Sketch data upload
+Upload the program
+ Sketch / Upload
+ 
 ### Cabling instructions
 ESP | CC1101 | Remark
 ------|------|------
@@ -133,12 +133,11 @@ D7 | SI
 GND | GND
 VCC | VCC | 3.3 Volt !!!
 
-
 ### Setup instructions
 
-The configuration of the Jarolift Dongle is stored in the EEPROM memory of the ESP8266. On first initialisation, when no configuration is found, it is initialized with some default values and the Dongle turns on the Admin-Mode.
+The configuration of the wifi Dongle is stored in the EEPROM memory of the ESP8266. On first initialisation, when no configuration is found, it is initialized with some default values and the Dongle turns on the Admin-Mode.
 
-In Admin-Mode, the blue LED on the ESP submodule is turned on and the Dongle creates an WLAN-Access-Point with the SSID `Jarolift-Dongle`, protectet with the WPA-Passwort `12345678`. Now you have 180 seconds (3 minutes) time to connect to the WLAN Accesspoint and visit the configuration webserver on
+In Admin-Mode, the blue LED on the ESP submodule is turned on and the Dongle creates an WLAN-Access-Point with the SSID `Shutter-RC-Dongle`, protectet with the WPA-Passwort `12345678`. Now you have 180 seconds (3 minutes) time to connect to the WLAN Accesspoint and visit the configuration webserver on
 
 http://192.168.4.1
 
@@ -146,7 +145,7 @@ Admin-Mode quits after the 180 second timeout or when you restart the Dongle fro
 
 If you need the Admin-Mode later, just press the "Reset" button on the NodeMCU module two times within 10 seconds. This double-reset will be detected and the Dongle enters Admin-Mode again, showing this with the blue LED turned on.
 
-The running Jarolift Dongle does some debug output on the serial console.
+The running shutter rc wifi Dongle does some debug output on the serial console.
 Console Speed is 115200 Bit/s
 
 
@@ -170,7 +169,8 @@ wdt reset
 
 ### Contribute
 
-You can contribute to Jarolift and SOMFY_MQTT by
+You can contribute to Shutter RC Wifi dongle by
+- Truyt to include Oregon sensor in RCSwitch library
 - providing Pull Requests (Features, Proof of Concepts, Language files or Fixes)
 - testing new released features and report issues
 - please try to follow the [Style-Guide](https://www.gnu.org/prep/standards/html_node/Writing-C.html#Writing-C)

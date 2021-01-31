@@ -1,0 +1,123 @@
+<html>
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Shutter & Remote Wifi Dongle</title>
+  
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="scripts.js"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.png">
+  </head>
+  <body>  
+    <!-- Main layout -->
+    <div class="siimple-layout">
+      <!-- Navbar -->
+      <div class="siimple-navbar siimple-navbar--navy siimple-navbar--medium">
+        <!-- Right menu -->
+        <div class="siimple-layout--left">
+          <a class="siimple-navbar-link" href="/">Home</a>
+          <a class="siimple-navbar-link" href="/system.html">System</a>
+          <a class="siimple-navbar-link" href="/jarolift.html">Jarolift</a>
+          <a class="siimple-navbar-link" href="/somfy.html">Somfy</a>
+          <a class="siimple-navbar-link" href="/log.html">Log</a>
+        </div>
+      </div>
+    
+      <!-- Content -->
+      <div class="siimple-content siimple-content--medium">
+        <div class="siimple-box" align="center">
+          <div class="siimple-box-subtitle">Shutter & Remote Wifi Dongle - Welcome</div>
+        </div>
+
+        <br>
+        <h3>General</h3>
+        This version is a fork of the &quot;Jarolift MQTTt; project described in <a class="siimple-link" target="_blank" href="https://github.com/madmartin/Jarolift_MQTT">here</a>.
+        Other than the original version, this fork works with Somfy and include RCSwitch library to receive or send remote command.
+        <br><br>
+        <h3>MQTT topic structure</h3>
+        This version uses MQTT topics with the following parts, combined by &quot;/&quot; characters:
+	<ul>
+		<li>command type prefix: one of &quot;cmd&quot;, &quot;tele&quot;, &quot;stat&quot;.</li>
+		<li>identifying device name - can be configured. default: &quot;jarolift&quot;.</li>
+		<li>fix part: &quot;shutter&quot;</li>
+		<li>the numeric channel number</li>
+	</ul>
+	The MQTT payload for the &quot;cmd&quot; commands are: &quot;UP&quot;, &quot;DOWN&quot;, &quot;STOP&quot;, &quot;SHADE&quot;, &quot;SETSHADE&quot; &quot;LEARN&quot;and &quot;PROGRAM&quot;.
+	All MQTT topics and commands are case sensitive, use them exactly as described here.
+        <p>
+          <h4>example MQTT topics to send commands to the shutter:</h4>
+          <pre class="siimple-pre">
+  cmd/shuuterrc/shutter/0 UP
+  cmd/shuuterrc/shutter/4 DOWN
+  cmd/shuuterrc/shutter/2 STOP
+  cmd/shuuterrce/shutter/6 SHADE
+  cmd/shuuterrc/shutter/12 SETSHADE (Jarolift only)
+  cmd/shuuterrc/shutter/12 LEARN (Jarolift only)
+  cmd/shuuterrc/shutter/17 PROGRAM (Somfy only)
+
+  Shutter 0 to 15 : Jarolift
+  Shutter 16 to 32 :  Somfy</pre>
+<h4>example MQTT topics to send commands to RF 433 device:</h4>
+          <pre class="siimple-pre">
+  cmd/shutterrc/rfsend/pplug0 1381716,24,1,0
+    plug0 define your device on you server (ie: Jeedom JMQTT plugin)
+    1381716,24,1,0 : RF Signal, bits, protocol, status (send back to your server through MQTT
+     to update your device status)
+ 
+ By default the dongle is set to listen RF 433 signal and decode them arcoding to RCSwitch library
+ 
+ ie: RF code received from remote command
+ [INFO] - received remote: {"code":"0x00154557", "bitlength":"0x18", "protocol":"0x01"}
+ can be reproduce withh MQTT command: cmd/shutterrc/rfsend/pplug0 1394007,24,1,0 
+  (convert value to decimal)
+ </pre>
+
+        </p>
+        <p>
+          <h4>MQTT topics send back with the updated status</h4>
+	 
+	  The status of a shutter is:
+	  <ul>
+		  <li>0 - open</li>
+		  <li>90 - shade position</li>
+		  <li>100 - close</li>
+          </ul>
+
+ 
+	  The status of a RF device is send back with the name provide inthe command
+	  
+		ie : command send through MQTT
+		 cmd/shutterrc/rfsend/pplug0 1394007,24,1,0
+		send back
+		 tele/shutterrc/remote/pplug0 0
+          <pre class="siimple-pre">
+  stat/shuuterdongle/shutter/0 100</pre>
+        </p>
+        <br>
+        <h3>Integration into openHAB</h3>
+        The integration in Smart Home system openHAB is actually pretty easy. Just install a MQTT broker binding and add the following into the item configuration:
+        <pre class="siimple-pre">
+  Rollershutter shutter1 &quot;shutter1&quot; {mqtt=&quot;&lt;[mosquitto:cmd/shutterrc/shutter/0:command:*:default], &gt;[mosquitto:stat/shutterrc/shutter/0:state:default]&quot;}
+  Rollershutter shutter2 &quot;shutter2&quot; {mqtt=&quot;&lt;[mosquitto:cmd/shutterrc/shutter/1:command:*:default], &gt;[mosquitto:stat/shutterrc/shutter/1:state:default]&quot;}
+  Rollershutter shutter3 &quot;shutter3&quot; {mqtt=&quot;&lt;[mosquitto:cmd/shutterrc/shutter/2:command:*:default], &gt;[mosquitto:stat/shutterrc/shutter/2:state:default]&quot;}
+        </pre>
+        <br>
+        <h3>Integration into Home Assistant</h3>
+        Here is a configuration example for Home Assistant:
+        <pre class="siimple-pre">
+cover:
+  - platform: mqtt
+    name: &quot;Wohnzimmer links&quot;
+    command_topic: &quot;cmd/shuuterrc/shutter/1&quot;
+    availability_topic: &quot;tele/shuuterrc/LWT&quot;
+    payload_open: &quot;UP&quot;
+    payload_close: &quot;DOWN&quot;
+    payload_stop: &quot;STOP&quot;
+    payload_available: &quot;Online&quot;
+    payload_not_available: &quot;Offline&quot;
+        </pre>
+
+      </div>
+    </div>
+  </body>

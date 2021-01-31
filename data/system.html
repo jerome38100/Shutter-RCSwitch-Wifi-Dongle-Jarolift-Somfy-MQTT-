@@ -1,0 +1,251 @@
+<html>
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Shutter & Remote Wifi Dongle</title>
+  
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="scripts.js"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.png">
+  
+    <script type="text/javascript">
+      window.onload=function(){
+        getConfig()
+      }
+    </script>
+  </head>
+  <body>  
+    <!-- Main layout -->
+    <div class="siimple-layout">
+      <!-- Navbar -->
+      <div class="siimple-navbar siimple-navbar--navy siimple-navbar--medium">
+        <!-- Right menu -->
+        <div class="siimple-layout--left">
+		  <a class="siimple-navbar-link" href="/">Home</a>
+          <a class="siimple-navbar-link" href="/system.html">System</a>
+          <a class="siimple-navbar-link" href="/jarolift.html">Jarolift</a>
+          <a class="siimple-navbar-link" href="/somfy.html">Somfy</a>
+          <a class="siimple-navbar-link" href="/log.html">Log</a>
+        </div>
+      </div>
+    
+      <!-- Content -->
+      <div class="siimple-content siimple-content--medium">
+        <!-- Example box -->
+        <div class="siimple-box" align="center">
+          <div class="siimple-box-subtitle">Shutter & Remote Wifi Dongle - Configuration</div>
+          <div class="siimple-box-detail" id="versionstr">Firmware</div>
+        </div>
+        <div id="spinner" class="siimple-spinner siimple-spinner--navy siimple-spinner--large"></div>
+        <!-- Grid row -->
+        <div class="siimple-grid-row" id="config" style="display:none;">
+          <div class="siimple-grid-col siimple-grid-col--12">
+            <!-- Form content -->
+            <form id="configForm">
+              <div class="siimple-form">
+                <div class="siimple-form-title">Network settings</div>
+                <div class="siimple-form-detail">Configure general network settings.</div>
+		<div class="siimple-box" style="background-color:#32e7cf">
+                <!-- SSID group -->
+                <div class="siimple-form-field">
+                  <div class="siimple-form-field-label">wireless SSID</div>
+                  <input type="text" id="ssid" name="ssid" maxlength=32 class="siimple-input siimple-input--fluid" placeholder="Your SSID">
+                </div>
+                <!-- password group -->
+                <div class="siimple-form-field">
+                  <div class="siimple-form-field-label">preshared key</div>
+                  <input type="password" id="password" name="password" maxlength=64 class="siimple-input siimple-input--fluid" placeholder="Your wireless password">
+                </div>
+                <!-- enable DHCP checkbox -->
+                <div class="siimple-form-field">
+                  <label class="siimple-label">use DHCP:</label>
+                  <div class="siimple-checkbox">
+                    <input type="checkbox" id="dhcp" name="dhcp">
+                    <label for="dhcp"></label>
+                  </div>
+                </div>
+                <!-- ip address group -->
+                <div class="siimple-form-field">
+                  <div class="siimple-form-field-label">ip address</div>
+                  <div class="siimple-grid">
+                    <div class="siimple-grid-row">
+                      <div class="siimple-grid-col siimple-grid-col--3"><input type="text" id="ip_0" name="ip_0" maxlength=3 class="siimple-input siimple-input--fluid"></div>
+                      <div class="siimple-grid-col siimple-grid-col--3"><input type="text" id="ip_1" name="ip_1" maxlength=3 class="siimple-input siimple-input--fluid"></div>
+                      <div class="siimple-grid-col siimple-grid-col--3"><input type="text" id="ip_2" name="ip_2" maxlength=3 class="siimple-input siimple-input--fluid"></div>
+                      <div class="siimple-grid-col siimple-grid-col--3"><input type="text" id="ip_3" name="ip_3" maxlength=3 class="siimple-input siimple-input--fluid"></div>
+                    </div>
+                  </div>
+                </div>
+                <!-- netmask group -->
+                <div class="siimple-form-field">
+                  <div class="siimple-form-field-label">network mask</div>
+                  <div class="siimple-grid">
+                    <div class="siimple-grid-row">
+                      <div class="siimple-grid-col siimple-grid-col--3"><input type="text" id="nm_0" name="nm_0" maxlength=3 class="siimple-input siimple-input--fluid"></div>
+                      <div class="siimple-grid-col siimple-grid-col--3"><input type="text" id="nm_1" name="nm_1" maxlength=3 class="siimple-input siimple-input--fluid"></div>
+                      <div class="siimple-grid-col siimple-grid-col--3"><input type="text" id="nm_2" name="nm_2" maxlength=3 class="siimple-input siimple-input--fluid"></div>
+                      <div class="siimple-grid-col siimple-grid-col--3"><input type="text" id="nm_3" name="nm_3" maxlength=3 class="siimple-input siimple-input--fluid"></div>
+                    </div>
+                  </div>
+                </div>
+                <!-- gateway -->
+                <div class="siimple-form-field">
+                  <div class="siimple-form-field-label">gateway</div>
+                  <div class="siimple-grid">
+                    <div class="siimple-grid-row">
+                      <div class="siimple-grid-col siimple-grid-col--3"><input type="text" id="gw_0" name="gw_0" maxlength=3 class="siimple-input siimple-input--fluid"></div>
+                      <div class="siimple-grid-col siimple-grid-col--3"><input type="text" id="gw_1" name="gw_1" maxlength=3 class="siimple-input siimple-input--fluid"></div>
+                      <div class="siimple-grid-col siimple-grid-col--3"><input type="text" id="gw_2" name="gw_2" maxlength=3 class="siimple-input siimple-input--fluid"></div>
+                      <div class="siimple-grid-col siimple-grid-col--3"><input type="text" id="gw_3" name="gw_3" maxlength=3 class="siimple-input siimple-input--fluid"></div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+    
+                <div class="siimple-form-title">MQTT configuration</div>
+                <div class="siimple-form-detail">Configure MQTT settings.</div>
+		<div class="siimple-box" style="background-color:#32e7cf">
+                <!-- MQTT broker IP -->
+                <div class="siimple-form-field">
+                    <div class="siimple-form-field-label">broker address</div>
+		    If you do don't want to connect to a MQTT broker, configure address 0.0.0.0
+                    <div class="siimple-grid">
+                      <div class="siimple-grid-row">
+                        <div class="siimple-grid-col siimple-grid-col--3"><input type="text" id="mqtt_broker_addr_0" name="mqtt_broker_addr_0" maxlength=3 class="siimple-input siimple-input--fluid"></div>
+                        <div class="siimple-grid-col siimple-grid-col--3"><input type="text" id="mqtt_broker_addr_1" name="mqtt_broker_addr_1" maxlength=3 class="siimple-input siimple-input--fluid"></div>
+                        <div class="siimple-grid-col siimple-grid-col--3"><input type="text" id="mqtt_broker_addr_2" name="mqtt_broker_addr_2" maxlength=3 class="siimple-input siimple-input--fluid"></div>
+                        <div class="siimple-grid-col siimple-grid-col--3"><input type="text" id="mqtt_broker_addr_3" name="mqtt_broker_addr_3" maxlength=3 class="siimple-input siimple-input--fluid"></div>
+                      </div>
+                    </div>
+                  </div>
+                <!-- broker port -->
+                <div class="siimple-form-field">
+                  <div class="siimple-form-field-label">broker port</div>
+                  <input type="text" id="mqtt_broker_port" name="mqtt_broker_port" maxlength=4 class="siimple-input siimple-input--fluid">
+                </div>
+                <!-- broker username -->
+                <div class="siimple-form-field">
+                  <div class="siimple-form-field-label">username (optional)</div>
+                  <input type="text" id="mqtt_broker_username" name="mqtt_broker_username" maxlength=25 class="siimple-input siimple-input--fluid">
+                </div>
+                <!-- broker password -->
+                <div class="siimple-form-field">
+                  <div class="siimple-form-field-label">password (optional)</div>
+                  <input type="text" id="mqtt_broker_password" name="mqtt_broker_password" maxlength=25 class="siimple-input siimple-input--fluid">
+                </div>
+                <!-- broker client Id -->
+                <div class="siimple-form-field">
+                  <div class="siimple-form-field-label">client id</div>
+		  Client id must be unique // default: ShutterRCDongle-&lt;ESP-ID&gt;
+                  <input type="text" id="mqtt_broker_client_id" name="mqtt_broker_client_id" maxlength=25 class="siimple-input siimple-input--fluid">
+                </div>
+                <!-- mqtt device topic -->
+                <div class="siimple-form-field">
+                  <div class="siimple-form-field-label">device topic</div>
+                  middle part of the mqtt topic to identify the device (if more than one Shuutle & RC WIFI dongle is used) // default: shutterrc
+                  <input type="text" id="mqtt_devicetopic" name="mqtt_devicetopic" maxlength=20 class="siimple-input siimple-input--fluid">
+                </div>
+                </div>
+    
+                <div class="siimple-form-title">Jarolift & Somfy settings</div>
+                <div class="siimple-form-detail">Configure Jarolift specific settings.</div>
+
+		<div class="siimple-box" style="background-color:#32e7cf">
+                <!-- master MSB -->
+                <div class="siimple-form-field">
+                  <div class="siimple-form-field-label">master MSB</div>
+		  Jarolift only:  a hexadecimal 32-bit number, example: 0x01234567
+                  <input type="text" id="master_msb" name="master_msb" maxlength=10 class="siimple-input siimple-input--fluid">
+                </div>
+                <!-- master LSB -->
+                <div class="siimple-form-field">
+                  <div class="siimple-form-field-label">master LSB</div>
+		  Jarolift only: a hexadecimal 32-bit number, example: 0x89abcdef
+                  <input type="text" id="master_lsb" name="master_lsb" maxlength=10 class="siimple-input siimple-input--fluid">
+                </div>
+                </div>
+		<div class="siimple-box" style="background-color:#32e7cf">
+                <!--  Learn mode checkbox -->
+                <div class="siimple-form-field">
+                  <div class="siimple-tip siimple-tip--teal siimple-tip--exclamation">
+                    Jarolift only : select learn mode for your receivers (shutter motors / radio receivers). new learn mode is for receivers newer than 2010, which have a learning sequence of buttons UP+DOWN pressed simultaneously, then press STOP. the old learn method for receivers manufactured before 2010 uses a special LEARN button. try new learn mode first.
+                  </div>
+                  <label class="siimple-label">new learn mode</label>
+                  <div class="siimple-checkbox">
+                    <input type="checkbox" id="learn_mode" name="learn_mode">
+                    <label for="learn_mode"></label>
+                  </div>
+                </div>
+                </div>
+
+		<div class="siimple-box" style="background-color:#32e7cf">
+                <!-- serial number -->
+                <div class="siimple-form-field">
+                    <div class="siimple-tip siimple-tip--teal siimple-tip--exclamation">
+                        each channel requires an individual serial number. if you enter a new serial number prefix here and activate the checkbox "save prefix and generate channel serial numbers" then this will be executed when you press the "save" button. new serialnumbers for all channels will be generated from the prefix and the counters are not updated. ATTENTION: all receivers must be learned in after this (again)!
+                    </div>
+                    <div class="siimple-form-field-label">channel serial number prefix</div>
+		    a hexadecimal 24-bit number, example: 0x12deaf used to generate Jarolift and Somfy device serial number
+                    <input type="text" id="serial" name="serial" maxlength=8 class="siimple-input siimple-input--fluid">
+                </div>
+
+                <!--  save and generate channel serial numbers checkbox -->
+                <div class="siimple-form-field">
+                  <label class="siimple-label">save prefix and generate channel serial numbers</label>
+                  <div class="siimple-checkbox">
+                    <input type="checkbox" id="set_and_generate_serial" name="set_and_generate_serial">
+                    <label for="set_and_generate_serial"> </label>
+                  </div>
+                </div>
+                </div>
+
+		<div class="siimple-box" style="background-color:#32e7cf">
+                <!-- jarolift counter -->
+                <div class="siimple-form-field">
+                    <div class="siimple-tip siimple-tip--teal siimple-tip--exclamation">
+                      the counters are send together with every datagram over the radio. beginning with zero, it is incremented on every datagram. each receiver listens to received datagrams and records the sender's device counter. when the sender's and receiver's device counter differ too much, you must re-learn the receiver. to avoid this when replacing a dongle (or when an update goes wrong) you can enter a non-zero device counter here. ATTENTION: don't touch this if you don't understand the effect, you risk to re-learn all your receivers (again)!
+                    </div>
+                    <div class="siimple-form-field-label">Jarolift counter</div>
+                    <input type="text" id="jaroliftcounter" name="jaroliftcounter" maxlength=8 class="siimple-input siimple-input--fluid">
+                </div>
+
+                <!--  set jarolift counter checkbox -->
+                <div class="siimple-form-field">
+                  <label class="siimple-label">save new jarolift counter</label>
+                  <div class="siimple-checkbox">
+                    <input type="checkbox" id="set_jaroliftcounter" name="set_jaroliftcounter">
+                    <label for="set_jaroliftcounter"> </label>
+                  </div>
+                </div>
+                </div>
+
+		<div class="siimple-box" style="background-color:#32e7cf">
+                <!-- somfy counter -->
+                <div class="siimple-form-field">
+                    <div class="siimple-form-field-label">somfy counter</div>
+                    <input type="text" id="somfycounter" name="somfycounter" maxlength=8 class="siimple-input siimple-input--fluid">
+                </div>
+
+                <!--  set somfy counter checkbox -->
+                 <div class="siimple-form-field">
+                  <label class="siimple-label">save new somfy counter</label>
+                  <div class="siimple-checkbox">
+                    <input type="checkbox" id="set_somfycounter" name="set_somfycounter">
+                    <label for="set_somfycounter"> </label>
+                  </div>
+                 </div>
+                </div>
+
+                <!-- Send button -->
+                <div class="siimple-form-field">
+                  <input type='button' class='siimple-btn siimple-btn--navy' value="save" name="save" onclick="writeConfig('save')">
+                  <input type='button' class='siimple-btn siimple-btn--grey' value="restart the dongle" name="restart" onclick="writeConfig('restart')">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>

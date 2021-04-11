@@ -1,4 +1,4 @@
-# Jarolift, SOMFY and RCSwitch_MQTT
+# Jarolift, SOMFY and RCSwitch MQTT
 
 Controlling Jarolift(TM) TDEF 433MHz radio shutters and SOMFY radio shutters via ESP8266 and CC1101 Transceiver Module in asynchronous mode.
 Receive and Send RF 433 signal ( RCSwitch library)

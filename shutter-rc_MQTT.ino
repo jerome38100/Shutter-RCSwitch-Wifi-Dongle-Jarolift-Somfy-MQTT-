@@ -403,7 +403,7 @@ void loop()
     } else if (web_cmd == "shade") {
       cmd_shade(web_cmd_channel);
     } else if (web_cmd == "learn") {
-      cmd_shade(web_cmd_channel);
+      cmd_learn(web_cmd_channel);
     } else if (web_cmd == "program") {
       cmd_program(web_cmd_channel);
     } else if (web_cmd == "updown") {
